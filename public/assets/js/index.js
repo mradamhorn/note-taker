@@ -25,6 +25,7 @@ const hide = (elem) => {
 // activeNote is used to keep track of the note in the textarea
 let activeNote = {};
 
+// getNotes is used to get all the notes from the db.json
 const getNotes = () =>
   fetch('/api/notes', {
     method: 'GET',
@@ -33,6 +34,8 @@ const getNotes = () =>
     },
   });
 
+
+// saveNote is uesd for saving a note to the db.json
 const saveNote = (note) =>
   fetch('/api/notes', {
     method: 'POST',
@@ -42,6 +45,8 @@ const saveNote = (note) =>
     body: JSON.stringify(note),
   });
 
+
+// deleteNote is used for deleting a note from the db.json
 const deleteNote = (id) =>
   fetch(`/api/notes/${id}`, {
     method: 'DELETE',
@@ -50,6 +55,8 @@ const deleteNote = (id) =>
     },
   });
 
+
+// renderActiveNote displays the selected note by id number, otherwise the fields are set to default
 const renderActiveNote = () => {
   hide(saveNoteBtn);
 
@@ -59,15 +66,19 @@ const renderActiveNote = () => {
     noteTitle.value = activeNote.title;
     noteText.value = activeNote.text;
   } else {
+    noteTitle.setAttribute('readonly', false);
+    noteText.setAttribute('readonly', false);
     noteTitle.value = '';
     noteText.value = '';
   }
 };
 
+// Gets the values entered in the title and text fields, and saves them to db.json, then updates the sidebar
 const handleNoteSave = () => {
   const newNote = {
     title: noteTitle.value,
     text: noteText.value,
+    id: Math.floor(Math.random() * 1000),
   };
   saveNote(newNote).then(() => {
     getAndRenderNotes();
@@ -100,8 +111,9 @@ const handleNoteView = (e) => {
   renderActiveNote();
 };
 
-// Sets the activeNote to and empty object and allows the user to enter a new note
+// Sets the activeNote to an empty object and allows the user to enter a new note
 const handleNewNoteView = (e) => {
+  e.preventDefault();
   activeNote = {};
   renderActiveNote();
 };
