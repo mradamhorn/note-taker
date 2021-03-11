@@ -4,6 +4,8 @@ let saveNoteBtn;
 let newNoteBtn;
 let noteList;
 
+
+
 if (window.location.pathname === '/notes') {
   noteTitle = document.querySelector('.note-title');
   noteText = document.querySelector('.note-textarea');
@@ -75,10 +77,10 @@ const renderActiveNote = () => {
 
 // Gets the values entered in the title and text fields, and saves them to db.json, then updates the sidebar
 const handleNoteSave = () => {
+
   const newNote = {
     title: noteTitle.value,
-    text: noteText.value,
-    id: Math.floor(Math.random() * 1000),
+    text: noteText.value
   };
   saveNote(newNote).then(() => {
     getAndRenderNotes();
